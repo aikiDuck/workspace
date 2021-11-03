@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- {{ otherMethod('Hello') }} -->
+        <div>
+            <!-- 
+            <input v-bind:type="type" v-bind:value="inputData">
+            <input :type="type" :value="inputData">
+            <a :href="getGithubLink('aikiDuck/workspace')">My Github</a>
+             -->
+            <button v-on:click="fnAlert('HELLO, AIKIDUCK !')">click Me</button>
+        </div>
+    </div>
+    <script>
+    new Vue({
+        el : '#app',
+        data : {
+            person : {
+                name : 'AikiDuck !',
+                age : 31
+            },
+            inputData : 'HELLO Default',
+            type : 'text',
+            link : 'https://github.com/'
+        },
+        methods: {
+            fnAlert(msg){
+                alert(msg);
+            },
+            getGithubLink(gitId){
+                return this.link + gitId + '.git';
+            },
+            nextYear(greeting){
+                return greeting + '~ ' + this.person.name + "는 내년 " + (this.person.age + 1) + "세.";
+            },
+            otherMethod(greeting){
+                return this.nextYear(greeting);
+            }
+
+        }
+    })
+    </script>
+</body>
+</html>
