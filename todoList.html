@@ -8,10 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="css/todo.css">
     <script src="js/todo.js"></script>
+    <style>
+      [v-cloak] { display: none; } 
+    </style>
 </head>
 <body>
-    <section class="todoapp">
-
+  <section class="todoapp">
         <header class="header">
           <h1>todos</h1>
           <input class="new-todo" 
@@ -21,20 +23,58 @@
             v-model="newTodo" 
             @keyup.enter="addTodo">
         </header>
+        <!--
+          autofocus         - 자동초점
+          autocomplete      - 자동완성 on/off
+          placeholder       - 자리 표시 자 텍스트
+          v-model           - 입력 값이 자동으로 뷰 데이터 속성에 연결
+          @keyup.enter      - ENTER키 입력 시 method 호출
+        -->
         
         <section class="main" v-show="todos.length" v-cloak>
+          <!--
+            v-show          - 엘리먼트를 조건부로 표시 (엘리먼트는 항상 렌더링 되고 DOM에 남아있다. 단순 엘리먼트에 display CSS 속성 토글)
+                              todos의 데이터가 존재하지 않으면  false.
+
+           *v-cloak         - vue 인스턴스가 준비될 때까지 컴파일되지 않은 mustache 바인딩을 숨기는데 사용. 
+                              [v-cloak] {display: none}을 함께 사용하면 컴파일이 끝날 때까지 보이지 않는다.
+                              (화면의 깜빡거림 등 문제를 해결 할 수 있다)
+          -->
+
           <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
           <label for="toggle-all"></label>
+          
           <ul class="todo-list">
+
             <li v-for="todo in filteredTodos"
               class="todo"
-              :key="todo.id"
-              :class="{ completed: todo.completed, editing: todo == editedTodo }">
+              v-bind:key="todo.id"
+              v-bind:class="{ completed: todo.completed, editing: todo == editedTodo }">
+              <!--
+                v-for           - 'item in items'형태로 items는 원본 데이터 배열이고 item은 반복되는 배열 엘리먼트의 별칭.
+                v-bind:class    - completed: todo.completed --- todo.completed가 ture이면 completed 적용.
+                                - editing: todo == editedTodo --- editedTodo의 값이 todo이면 editedTodo 적용.
+              -->
+
               <div class="view">
                 <input class="toggle" type="checkbox" v-model="todo.completed">
+                <!--
+                  input type이 checkbox일 경우 v-model은 boolean값을 가진다.
+                  *boolean(불린)이란, ture와 false를 값만 이용하는 방식.( check : uncheck )
+                -->
                 <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
+                <!-- 
+                  @dblclick     - ondblclick(더블클릭 이벤트)
+                  이벤트 참조 2)   editTodo(todo) method를 호출. (editedTodo를 todo 값으로 변환한다)
+                -->
                 <button class="destroy" @click="removeTodo(todo)"></button>
+                <!--
+                  @click        - 여러 개의 이벤트를 사용 할 땐 @click="[method1(), method2()]" 방법으로 호출
+                  이벤트 참조 1)   v-on : dom 이벤트가 트리거될 때 js를 실행할 수 있는 이벤트 리스너.
+                                  *v-on을 줄여서 @로 작성
+                -->
               </div>
+
               <input class="edit" type="text"
                 v-model="todo.title"
                 v-todo-focus="todo == editedTodo"
@@ -68,3 +108,25 @@
     </footer>
 </body>
 </html>
+
+
+
+<!-- 
+  * 이벤트 참조 *
+  · 1) click     : 마우스로 클릭했을 때 실행되는 이벤트
+  · 2) dblclick  : 마우스로 더블클릭했을 때 실행되는 이벤트
+  · 3) mouseover : 마우스포인트가 해당요소에 올라왔을 때 실행되는 이벤트
+  · 4) mouseout  : 마우스포인트가 해당요소를 벗어났을 때 실행되는 이벤트
+  · 5) mousemove : 마우스포인트가 이동했을 때(움직일때) 실행되는 이벤트 
+  · 6) mousedown : 마우스가 버튼을 눌렀을 때 실행되는 이벤트
+  · 7) mouseup   : 마우스가 버튼을 놓았을 때 실행되는 이벤트
+  · 8) keyup     : 키보드 키를 놓았을 때 실행되는 이벤트
+  · 9) keydown   : 키보드 키를 눌렀을 때 실행되는 이벤트
+  · 10) keypress : 키보드 키를 눌렀다가 놓았을 때 실행되는 이벤트
+  · 11) change   : 요소가 변경될 때 실행되는 이벤트
+  · 12) submit   : form 태그에서 제출될 때 실행되는 이벤트
+  · 13) reset    : form 태그에서 리셋할 때 실행되는 이벤트
+  · 14) select   : select 태그의 값이 선택되었을 때 실행되는 이벤트
+  · 15) focus    : 태그에 포커스되어 있을 때 실행되는 이벤트
+  · 16) blur     : 태그가 포커스를 잃었을 때 실행되는 이벤트 
+-->
