@@ -132,6 +132,7 @@ window.onload = function(){
         },
 
         directives: {
+            //디렉티브(Directives) ??????????
             'todo-focus': function (el, binding) {
                 if (binding.value) {
                     el.focus()
